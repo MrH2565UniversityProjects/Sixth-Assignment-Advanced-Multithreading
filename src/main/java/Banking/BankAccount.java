@@ -25,28 +25,34 @@ public class BankAccount {
     }
 
     public void deposit(int amount) {
+        deposit(amount,true);
+    }
+
+    public void deposit(int amount,boolean hasMessage) {
         lock.lock();
         balance += amount;
         lock.unlock();
-        System.out.println("+" + amount + " to the " + getId() + " account");
-        System.out.println("new balance is " + balance);
+        if(hasMessage){
+            System.out.println("+" + amount + " to the " + getId() + " account");
+            System.out.println("new balance is " + balance);
+        }
     }
-
     public void withdraw(int amount) {
+        withdraw(amount,true);
+    }
+    public void withdraw(int amount,boolean hasMessage) {
         lock.lock();
         balance -= amount;
         lock.unlock();
-        System.out.println("-" + amount + " from the " + getId() + " account");
-        System.out.println("new balance is " + balance);
+        if(hasMessage) {
+            System.out.println("-" + amount + " from the " + getId() + " account");
+            System.out.println("new balance is " + balance);
+        }
     }
 
     public void transfer(BankAccount target, int amount) {
-        lock.lock();
-        target.getLock().lock();
-        balance -= amount;
-        target.balance += amount;
-        lock.unlock();
-        target.getLock().unlock();
+        withdraw(amount,false);
+        target.deposit(amount,false);
         System.out.println(amount + " transferred from the account " + getId() + " to account " + target.getId());
         System.out.println("new balance is " + balance);
     }
