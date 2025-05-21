@@ -28,7 +28,7 @@ public class BankAccount {
         lock.lock();
         balance += amount;
         lock.unlock();
-        System.out.println("+" + amount + " to the " + getId() + "account");
+        System.out.println("+" + amount + " to the " + getId() + " account");
         System.out.println("new balance is " + balance);
     }
 
@@ -36,7 +36,7 @@ public class BankAccount {
         lock.lock();
         balance -= amount;
         lock.unlock();
-        System.out.println("-" + amount + " from the " + getId() + "account");
+        System.out.println("-" + amount + " from the " + getId() + " account");
         System.out.println("new balance is " + balance);
     }
 
@@ -45,7 +45,9 @@ public class BankAccount {
         target.getLock().lock();
         balance -= amount;
         target.balance += amount;
-        System.out.println(amount + "transferred from the account " + getId() + " to account " + target.getId());
+        lock.unlock();
+        target.getLock().unlock();
+        System.out.println(amount + " transferred from the account " + getId() + " to account " + target.getId());
         System.out.println("new balance is " + balance);
     }
 }
